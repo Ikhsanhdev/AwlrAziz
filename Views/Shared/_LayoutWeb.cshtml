@@ -27,6 +27,25 @@
             font-family: 'Manrope', sans-serif;
         }
 
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #wrapper,
+        .content-page {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-page > .row.full-height {
+            flex-grow: 1;
+            min-height: 0;
+        }
+
         .spanforname {
             font-size: 0.8rem;
         }

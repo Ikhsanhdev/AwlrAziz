@@ -14,99 +14,108 @@
     }
 
     #map {
-      height: 87vh;
+      width: 100%;
+      height: 100%; /* ubah dari sebelumnya */
+      min-height: 400px;
       border-radius: 10px;
-    }
-
-    .left-panel {
-      max-height: 87vh;
-      overflow-y: auto;
-      padding-right: 10px;
     }
   </style>
 }
 
-<div class="text-center">
-  <div class="row">
+<div class="row g-3 align-items-stretch d-flex">
+  <div class="col-4 d-flex flex-column">
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-awlr">
+            <h5 class="card-title text-uppercase text-white mb-0">
+              <i class="fas fa-water me-1"></i>Pos Duga Air
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <h5>Nama Pos:</h5>
+                <p class="mb-1 fw-semibold">AWLR Antapani</p>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h5>Device:</h5>
+                <p class="mb-1 fw-semibold">Higertech <span class="badge bg-warning text-dark">HGT123</span></p>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h5>Tinggi Muka Air (TMA):</h5>
+                <p class="mb-1 text-primary fw-semibold">21.56 m</p>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h5>Debit:</h5>
+                <p class="mb-1 text-success fw-semibold">24.1 m³/s</p>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h5>Baterai</h5>
+                <p class="mb-1 text-success fw-semibold">13.45 Volt</p>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h5>Status:</h5>
+                <span class="badge bg-success text-dark">Normal</span>
+              </div>
+              <div class="col-md-12 mb-2">
+                <h5>Waktu Pengukuran:</h5>
+                <p class="mb-0 text-muted">4 Juli 2025, 10:45 WIB</p>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <h5>Grafik TMA (24 jam terakhir):</h5>
+              <div id="chartTMA" style="height: 300px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-status">
+            <h5 class="card-title text-uppercase text-white mb-0">
+              <i class="fas fa-exclamation-triangle me-1"></i>Status Batas Siaga
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="position-relative mb-2" style="height: 20px; background: linear-gradient(to right, #28a745 0%, #ffc107 33%, #fd7e14 66%, #dc3545 100%); border-radius: 10px;"></div>
+
+              <!-- Label Range -->
+            <div class="d-flex justify-content-between small fw-semibold mt-2">
+              <div class="text-success">0</div>
+              <div class="text-warning">656.75 mdpl</div>
+              <div class="text-orange" style="color: #fd7e14;">656.88 mdpl</div>
+              <div class="text-danger">658 mdpl</div>
+            </div>
+
+            <ul class="list-inline text-center mt-3 mb-0 small text-muted"></ul>
+              <li class="list-inline-item">Normal: <span class="text-success fw-bold">Hijau</span></li>
+              <li class="list-inline-item">Waspada: <span class="text-warning fw-bold">Kuning</span></li>
+              <li class="list-inline-item">Siaga: <span style="color: #fd7e14;" class="fw-bold">Oranye</span></li>
+              <li class="list-inline-item">Awas: <span class="text-danger fw-bold">Merah</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8 d-flex flex-column">
+    <div class="card flex-fill">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+
+
+@* <div class="text-center">
+  <div class="row g-3 align-items-start">
     <div class="col-4 left-panel">
-      <div class="row mb-4">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header bg-awlr">
-              <h5 class="card-title text-uppercase text-white mb-0">
-                <i class="fas fa-water me-1"></i>Pos Duga Air
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <h5>Nama Pos:</h5>
-                  <p class="mb-1 fw-semibold">AWLR Antapani</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <h5>Device:</h5>
-                  <p class="mb-1 fw-semibold">Higertech <span class="badge bg-warning text-dark">HGT123</span></p>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <h5>Tinggi Muka Air (TMA):</h5>
-                  <p class="mb-1 text-primary fw-semibold">21.56 m</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <h5>Debit:</h5>
-                  <p class="mb-1 text-success fw-semibold">24.1 m³/s</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <h5>Baterai</h5>
-                  <p class="mb-1 text-success fw-semibold">13.45 Volt</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <h5>Status:</h5>
-                  <span class="badge bg-success text-dark">Normal</span>
-                </div>
-                <div class="col-md-12 mb-2">
-                  <h5>Waktu Pengukuran:</h5>
-                  <p class="mb-0 text-muted">4 Juli 2025, 10:45 WIB</p>
-                </div>
-              </div>
 
-              <div class="mt-4">
-                <h5>Grafik TMA (24 jam terakhir):</h5>
-                <div id="chartTMA" style="height: 300px;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header bg-status">
-              <h5 class="card-title text-uppercase text-white mb-0">
-                <i class="fas fa-exclamation-triangle me-1"></i>Status Batas Siaga
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="position-relative mb-2" style="height: 20px; background: linear-gradient(to right, #28a745 0%, #ffc107 33%, #fd7e14 66%, #dc3545 100%); border-radius: 10px;"></div>
-
-                <!-- Label Range -->
-              <div class="d-flex justify-content-between small fw-semibold mt-2">
-                <div class="text-success">0</div>
-                <div class="text-warning">656.75 mdpl</div>
-                <div class="text-orange" style="color: #fd7e14;">656.88 mdpl</div>
-                <div class="text-danger">658 mdpl</div>
-              </div>
-
-              <ul class="list-inline text-center mt-3 mb-0 small text-muted"></ul>
-                <li class="list-inline-item">Normal: <span class="text-success fw-bold">Hijau</span></li>
-                <li class="list-inline-item">Waspada: <span class="text-warning fw-bold">Kuning</span></li>
-                <li class="list-inline-item">Siaga: <span style="color: #fd7e14;" class="fw-bold">Oranye</span></li>
-                <li class="list-inline-item">Awas: <span class="text-danger fw-bold">Merah</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
     <div class="col-8">
       <div class="row mb-4">
@@ -118,7 +127,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> *@
 
 @section Scripts {
   <script src="~/js/pages/Home.min.js"></script>

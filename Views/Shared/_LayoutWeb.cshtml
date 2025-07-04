@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AwlrAziz</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+    @* <link rel="stylesheet" href="~/AwlrAziz.styles.css" asp-append-version="true" /> *@
+    @RenderSection("Styles", false)
+
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="~/lib/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/amitjakhu/dripicons/webfont/css/dripicons-v2.min.css">
+    <!-- Bootstrap css -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- App css -->
+    <link href="~/css/app.min.css" rel="stylesheet" type="text/css" id="app-style"/>
+    <!-- icons -->
+    <link href="~/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/head.min.js"></script>
+
+    <style>
+        * {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .spanforname {
+            font-size: 0.8rem;
+        }
+
+        .topnav .nav-link.active {
+            color: #00acc1;
+        }
+
+        .navbar-custom .topnav-menu .nav-link {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            font-weight: 400;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        #element-avatar {
+            display: flex;
+            width: fit-content;
+            border-radius: 3px;
+            justify-content: right;
+        }
+
+        .e-avatar {
+            font-size: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 45px;
+            align-self: center;
+            justify-self: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 400;
+            margin-right: 7px;
+            letter-spacing: 1px;
+            border: 1px solid rgb(255, 255, 255, 0.5);
+        }
+
+        .e-avatar.green {
+            background-color: #87eb87;
+        }
+
+        .e-avatar.violet {
+            background-color: #ee82ee;
+        }
+
+        .e-avatar.blue {
+            background-color: #7171e4;
+        }
+
+        .e-avatar.red {
+            background-color: #d86e6e;
+        }
+
+        .e-avatar.rose {
+            /* background-color: #bc8f8f; */
+            background-color: #52C1F5;
+            color: white;
+        }
+
+        #sidebar-menu>ul>li>a {
+            font-size: 14px;
+        }
+
+        .nav-second-level li a {
+            font-size: 13.5px;
+        }
+
+        #sidebar-menu .menu-title {
+            padding: 10px 20px;
+            padding-bottom: 0;
+            font-size: .7rem;
+        }
+
+        .highlight {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .selectize-input,
+        .selectize-input.input-active {
+            border-radius: 6px;
+        }
+
+        .navbar-custom .app-company {
+            height: 70px;
+            display: table;
+            width: 320px;
+            margin-right: 20px;
+        }
+
+        .navbar-custom .app-company .app-company-box {
+            display: table-cell;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        .table-custom {
+            border-collapse: collapse;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 14px;
+
+            /* add this */
+            overflow: hidden
+        }
+
+        .table-custom tbody {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-custom thead {
+            border: 1px solid #2899D5;
+        }
+
+        .table-custom-arr thead {
+            border: 1px solid rgb(255, 255, 255, 0.3);
+        }
+
+        @*.table-customtheadtrth{&:first-child{border-radius:8px000}&:last-child{border-radius:08px00}}*@
+        .table-sm>:not(caption)>*>* {
+            padding-left: 0.85rem;
+            padding-right: 0.85rem;
+        }
+
+        .parsley-errors-list>li {
+            @*padding-left:0;*@
+            margin-top: 0.25rem;
+            font-size: .75rem;
+            color: #f1556c;
+        }
+
+        .parsley-errors-list>li:before {
+            content: "\f05d6";
+            font-size: .85rem;
+            @*"\f0028"*@
+        }
+
+        .ms-container {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .custom-header {
+            text-align: center;
+            padding: 3px;
+            background: #0065A2;
+            color: #fff;
+        }
+
+        .navbar-custom {
+            background-color: #5ea1d1;
+            border-bottom: 3px solid #ffc800;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+            height: 75px;
+        }
+
+        #show_date {
+            @*font-family:'DSDigital';*@
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        #logo-desc {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            margin-top: 12px !important;
+            margin-bottom: 12px !important;
+        }
+
+        .logo-box.d-flex {
+            width: auto !important;
+        }
+
+        #logo-desc>span {
+            display: block !important;
+            font-size: 16px !important;
+            color: white;
+            font-weight: 600;
+        }
+
+        #logo-desc>span:nth-child(2) {
+            font-size: 14px !important;
+            font-weight: 500;
+        }
+
+        #logo-desc>span:last-child {
+            font-size: 12px !important;
+            font-weight: 500;
+        }
+
+        @@media only screen and (min-width: 768px) {
+
+            #logo-desc>span {
+                display: none !important;
+            }
+        }
+
+        @@media only screen and (min-width: 992px) {
+            #logo-desc>span {
+                display: block !important;
+                font-size: 10px !important;
+                color: #fff;
+            }
+
+            #logo-desc {
+                margin-left: 8px !important;
+            }
+
+            #logo-desc>span:nth-child(2) {
+                font-size: 9px !important;
+            }
+
+            #logo-desc>span:last-child {
+                font-size: 9px !important;
+
+            }
+        }
+
+        @@media only screen and (min-width: 1024px) {
+            #logo-desc>span {
+                display: block !important;
+                font-size: 12px !important;
+                color: #fff;
+            }
+
+            #logo-desc {
+                margin-left: 10px !important;
+            }
+
+            #logo-desc>span:nth-child(2) {
+                font-size: 11px !important;
+            }
+
+            #logo-desc>span:last-child {
+                font-size: 11px !important;
+
+            }
+        }
+
+        @*.logo-lgimg{border:1pxsolid#FFC92A;margin-bottom:2px;}*@
+        .dataTables_info,
+        .dataTables_paginate {
+            width: 50%;
+            display: inline-block;
+        }
+
+        div#paging_simple_numbers {
+            padding-top: 0.85em;
+        }
+
+        .bg-awlr {
+            background-color: #111d7e;
+        }
+
+        .bg-status {
+            background-color: #9ca0c9;
+        }
+    </style>
+</head>
+<body data-theme="light" data-layout-mode="horizontal" data-topbar-color="dark" data-menu-position="fixed">
+    <!-- Begin page -->
+    <div id="wrapper">
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <div class="container-fluid">
+                <ul class="list-unstyled topnav-menu float-end mb-0">
+                    <li class="d-none d-xl-block">
+                        <a class="nav-link waves-effect waves-light m-0" aria-haspopup="false" aria-expanded="false"
+                            id="show_date"></a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen"
+                            href="#">
+                            <i class="fe-maximize noti-icon"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="logo-box d-flex">
+                    <div>
+                        <a href="/" class="logo logo-light">
+                            <span class="logo-sm" id="logo-sm-light">
+                                <img class="ms-3 rounded-2" src="~/img/amik.png" alt=""
+                                    height="55">
+                            </span>
+                            <span class="logo-lg" id="logo-lg-light">
+                                <img class="rounded-2" src="~/img/amik.png" alt="" height="60">
+                            </span>
+                        </a>
+                    </div>
+                    <div class="d-none d-md-block d-lg-block d-xl-block" id="logo-desc">
+                        <span class="text-uppercase">Sistem Peringatan Dini Banjir</span>
+                        <span>Berbasi Web Dengan Iot dan</span>
+                        <span>Notifikasi Whatsapp</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-page">
+            @RenderBody()
+        </div>
+    </div>
+   
+    <script src="~/js/vendor.min.js"></script>
+    <script src="~/lib/axios/axios.min.js"></script>
+
+    @RenderSection("scripts", false)
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/js/app.min.js"></script>
+
+    <script src="~/lib/moment/min/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.43/moment-timezone.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.31/moment-timezone-with-data.js"></script>
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script src="~/js/global.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let initDateClock = setInterval(showDateClock, 1000);
+        });
+
+        window.showDateClock = function () {
+            let momentjs = moment();
+
+            momentjs.locale('id');
+
+            momentjs.tz("Asia/Jakarta");
+
+            $('#show_date').html('<i class="fe-calendar"></i> ' + momentjs.format('D MMMM YYYY') + ' ' + momentjs.format('HH:mm:ss') + `WIB`);
+        };
+    </script>
+    @RenderSection("additionalScripts", false)
+</body>
+</html>

@@ -1,0 +1,51 @@
+/* General styles for the topbar */
+.topbar-dropdown {
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    height: 100%; /* Ensure it takes the full height of the navbar */
+}
+
+.nav-user {
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    padding: 0; /* Remove padding if any */
+    height: 100%; /* Ensure it takes the full height of the navbar */
+}
+
+.e-avatar {
+    display: flex;
+    align-items: center; /* Center align avatar */
+    justify-content: center; /* Center align avatar */
+    width: 40px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.spanforname, .pro-user-name {
+    display: flex;
+    align-items: center; /* Center align text */
+    height: 100%; /* Ensure it takes the full height of the navbar */
+}
+
+@media (max-width: 400px) {
+    .topbar-dropdown .dropdown-menu {
+        position: absolute !important;
+        right: 0 !important;
+        left: auto !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        margin-top: 10px; /* Adjust as needed */
+    }
+
+    .nav-user .spanforname {
+        display: none; /* Hide on mobile if space is limited */
+    }
+
+    #element-avatar {
+        display: flex;
+        align-items: center; /* Center align items vertically */
+        margin-left: auto; /* Push avatar to the right */
+        margin-top: 20px;
+        height: 100%; /* Ensure it takes the full height of the navbar */
+    }
+}

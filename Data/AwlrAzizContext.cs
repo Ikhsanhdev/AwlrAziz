@@ -12,6 +12,8 @@ public partial class AwlrAzizContext : DbContext {
 
     public virtual DbSet<MvDevice> MvDevices { get; set; }
     public virtual DbSet<Device> Devices { get; set; }
+    public virtual DbSet<Station> Stations { get; set; }
+    public virtual DbSet<AwlrLastReading> AwlrLastReadings { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql("name=DefaultConnection");
@@ -54,6 +56,7 @@ public partial class AwlrAzizContext : DbContext {
             entity.Property(e => e.BrandUrl).HasMaxLength(255);
             entity.Property(e => e.BrandUsername).HasMaxLength(255);
             entity.Property(e => e.DeletedAt).HasColumnType("timestamp(0) without time zone");
+            // entity.Property(e => e.InstalledDate).HasColumnType("date");
             entity.Property(e => e.DeviceId).HasMaxLength(255);
             entity.Property(e => e.NoGsm).HasMaxLength(255);
             entity.Property(e => e.OrganizationCode).HasMaxLength(10);
@@ -66,6 +69,49 @@ public partial class AwlrAzizContext : DbContext {
             entity.Property(e => e.UnitDebit).HasMaxLength(255);
             entity.Property(e => e.UnitDisplay).HasMaxLength(255);
             entity.Property(e => e.UnitSensor).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<AwlrLastReading>(entity =>
+        {
+            entity.ToTable("AwlrLastReadings");
+
+            // entity.HasKey(e => new { e.StationId, e.DeviceId }).HasName("awlr_last_readings_pkey");
+            entity.HasKey(e => e.Id).HasName("awlr_last_readings_pkey");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("Id");
+            entity.Property(e => e.StationId)
+                .ValueGeneratedNever()
+                .HasColumnName("StationId");
+            entity.Property(e => e.DeviceId)
+                .ValueGeneratedNever()
+                .HasColumnName("DeviceId");
+            entity.Property(e => e.ReadingAt)
+                .HasColumnType("timestamp(0) without time zone")
+                .HasColumnName("ReadingAt");
+            entity.Property(e => e.ChangeStatus)
+                .HasMaxLength(255)
+                .HasColumnName("ChangeStatus");
+            entity.Property(e => e.WarningStatus)
+                .HasMaxLength(255)
+                .HasColumnName("WarningStatus");
+            entity.Property(e => e.WaterLevel).HasColumnName("WaterLevel");
+            entity.Property(e => e.ChangeValue).HasColumnName("ChangeValue");
+        });
+
+        modelBuilder.Entity<Station>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Stations_pkey");
+            entity.Property(e => e.Id).HasDefaultValueSql("uuid_generate_v4()");
+            entity.Property(e => e.CreatedAt).HasColumnType("timestamp(0) without time zone");
+            entity.Property(e => e.DeletedAt).HasColumnType("timestamp(0) without time zone");
+            entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.Photo)
+                .HasMaxLength(255)
+                .HasDefaultValueSql("NULL::character varying");
+            entity.Property(e => e.Type).HasMaxLength(255);
+            entity.Property(e => e.UpdatedAt).HasColumnType("timestamp(0) without time zone");
         });
 
         OnModelCreatingPartial(modelBuilder);

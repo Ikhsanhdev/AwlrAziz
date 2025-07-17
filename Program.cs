@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using System;
 using Dapper;
 using Serilog;
+using Hangfire;
+using Hangfire.PostgreSql;
+using AwlrAziz.Interfaces;
+using AwlrAziz.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +24,9 @@ builder.Services.AddControllersWithViews().AddNewtonsoftJson(opt =>
 // builder.Services.RegisterServices();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<Serilog.ILogger>(sp => Log.Logger); 
 // builder.Services.AddHttpClient<ApiController>();
-
+builder.Services.RegisterServices();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

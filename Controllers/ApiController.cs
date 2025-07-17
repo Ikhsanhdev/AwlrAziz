@@ -1,8 +1,6 @@
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
-// using AwlrAziz.Helpers;
 using AwlrAziz.Interfaces;
-using AwlrAziz.Jobs;
 using AwlrAziz.Models.Customs;
 using Microsoft.AspNetCore.Http;
 using AspNetCoreRateLimit;
@@ -18,22 +16,28 @@ namespace AwlrAziz.Controllers
     [Route("api/device")]
     public class ApiController : BaseController
     {
-        private readonly ConcurrentDictionary<string, DateTime> lastRequestTimestamps = new ConcurrentDictionary<string, DateTime>();
-        private readonly IClientPolicyStore _clientPolicyStore;
+        private readonly IUnitOfWorkRepository _unitOfWorkRepository;
 
-        public ApiController() { }
+        public ApiController(IUnitOfWorkRepository unitOfWorkRepository)
+        {
+            _unitOfWorkRepository = unitOfWorkRepository;
+        }
 
         [HttpGet("store")]
-        public async Task Store(ExistingRequest request)
+        public async Task<IActionResult> Store([FromQuery] string id, [FromQuery] double tma)
         {
             try
             {
-                BackgroundJob.Enqueue<IExistingReadingJob>(task => task.Reading(request));
+                if (string.IsNullOrEmpty(id))
+                    return BadRequest("Parameter 'id' tidak boleh kosong.");
+
+                await _unitOfWorkRepository.Devices.InsertAsync(id, tma);
+                return Ok(new { success = true, message = "Data berhasil disimpan." });
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "General Exception: {@ExceptionDetails}", new { ex.Message, ex.StackTrace, ExistingRequest = request });
-                throw;
+                Log.Error(ex, "Gagal menyimpan data dengan id={Id}, tma={Tma}", id, tma);
+                return StatusCode(500, ex.Message);
             }
         }
     }

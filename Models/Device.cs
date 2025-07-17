@@ -13,7 +13,8 @@ public partial class Device
 
     public string? NoGsm { get; set; }
 
-    public DateOnly? InstalledDate { get; set; }
+    // public DateOnly? InstalledDate { get; set; }
+    public DateTime? InstalledDate { get; set; }
 
     public double? Calibration { get; set; }
 

@@ -1,9 +1,8 @@
 using AwlrAziz.Interfaces;
-using AwlrAziz.Jobs;
 using AwlrAziz.Repositories;
 // using AwlrAziz.Services;
 
-namespace WebTelemetry
+namespace AwlrAziz
 {
     public static class ServiceCollectionExtension
     {

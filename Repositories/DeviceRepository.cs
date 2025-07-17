@@ -14,6 +14,7 @@ namespace AwlrAziz.Repositories
     {
         Task<MvDevice?> GetExistingDeviceAsync(string deviceId);
         Task<MvDevice?> GetMvDeviceAsync(string brandCode, string deviceId);
+        Task InsertAsync(string deviceId, double tma);
     }
 
     public class DeviceRepository : IDeviceRepository
@@ -56,11 +57,11 @@ namespace AwlrAziz.Repositories
                 throw;
             }
         }
-        
+
         public async Task<MvDevice?> GetMvDeviceAsync(string brandCode, string deviceId)
         {
             try
-            {    
+            {
                 using var _db = new NpgsqlConnection(_connectionString);
                 var query = @"SELECT * FROM ""MvDevices"" WHERE ""BrandCode"" = @BrandCode AND ""DeviceId"" = @DeviceId LIMIT 1";
                 var result = await _db.QueryFirstOrDefaultAsync<MvDevice>(query, new { BrandCode = brandCode, DeviceId = deviceId });
@@ -76,6 +77,28 @@ namespace AwlrAziz.Repositories
                 Log.Error(ex, "General Exception: {@ExceptionDetails}", new { ex.Message, ex.StackTrace, BrandCode = brandCode, DeviceId = deviceId });
                 throw;
             }
+        }
+        
+        public async Task InsertAsync(string deviceId, double tma)
+        {
+            var device = await GetExistingDeviceAsync(deviceId);
+            if (device == null)
+            {
+                Log.Warning("Device ID {DeviceId} tidak ditemukan di MvDevices", deviceId);
+                return; // atau throw error, tergantung logikamu
+            }
+
+            var data = new AwlrLastReading
+            {
+                Id = Guid.NewGuid(),
+                DeviceId = deviceId,
+                StationId = device.StationId,
+                WaterLevel = tma,
+                ReadingAt = DateTime.Now
+            };
+
+            _context.AwlrLastReadings.Add(data);
+            await _context.SaveChangesAsync();
         }
     }
 }

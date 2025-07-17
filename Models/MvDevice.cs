@@ -27,7 +27,7 @@ public partial class MvDevice
 
     public string? BrandJobName { get; set; }
 
-    public Guid? StationId { get; set; }
+    public Guid StationId { get; set; }
 
     public string? StationName { get; set; }
 
@@ -41,7 +41,7 @@ public partial class MvDevice
 
     public string? NoGsm { get; set; }
 
-    public DateOnly? InstalledDate { get; set; }
+    public DateTime? InstalledDate { get; set; }
 
     public double? Calibration { get; set; }
 

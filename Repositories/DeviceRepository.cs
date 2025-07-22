@@ -199,15 +199,17 @@ namespace AwlrAziz.Repositories
                     set.""Siaga3"" AS siaga3,
                     set.""UnitDisplay"" AS unit_display,
                     set.""UnitSensor"" AS unit_sensor,
-                    r.""ReadingAt"" AS reading_at,
+                    TO_CHAR(r.""ReadingAt"", 'YYYY-MM-DD HH24:MI:SS') AS reading_at,
                     r.""WaterLevel"" AS water_level,
                     r.""ChangeValue"" AS change_value,
                     r.""ChangeStatus"" AS change_status,
                     r.""WarningStatus"" AS warning_status
-                FROM ""AwlrLastReadings"" AS r 
-                LEFT JOIN ""Stations"" AS st ON r.""StationId"" = st.""Id""
-                LEFT JOIN ""AwlrSettings"" AS set ON st.""Id"" = set.""StationId""
-                WHERE r.""DeviceId"" = @DeviceId";
+                FROM 
+                    ""AwlrLastReadings"" AS r 
+                    LEFT JOIN ""Stations"" AS st ON r.""StationId"" = st.""Id""
+                    LEFT JOIN ""AwlrSettings"" AS set ON st.""Id"" = set.""StationId""
+                WHERE r.""DeviceId"" = @DeviceId
+                ORDER BY r.""ReadingAt"" DESC";
 
             var result = await connection.QueryAsync(sql, new { DeviceId = id });
             return result.ToList();

@@ -24,7 +24,7 @@ namespace AwlrAziz.Controllers
         }
 
         [HttpGet("store")]
-        public async Task<IActionResult> Store([FromQuery] string id, [FromQuery] double tma)
+        public async Task<IActionResult> Store([FromQuery] string id, [FromQuery] decimal tma)
         {
             try
             {

@@ -40,5 +40,30 @@ namespace AwlrAziz.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("reading")]
+        public async Task<IActionResult> Reading([FromQuery] string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                    return BadRequest("Parameter 'id' tidak boleh kosong.");
+
+                var data = await _unitOfWorkRepository.Devices.GetReadingDevice(id);
+
+                var result = new
+                {
+                    metaData = new { code = 200, message = "OK" },
+                    response = data
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Gagal mengambil data dengan id={Id}", id);
+                return StatusCode(500, ex.Message);
+            }
+         }
     }
 }

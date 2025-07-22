@@ -15,6 +15,7 @@ namespace AwlrAziz.Repositories
         Task<MvDevice?> GetExistingDeviceAsync(string deviceId);
         Task<MvDevice?> GetMvDeviceAsync(string brandCode, string deviceId);
         Task InsertAsync(string deviceId, double tma);
+        Task<List<dynamic>> GetReadingDevice(string id);
     }
 
     public class DeviceRepository : IDeviceRepository
@@ -78,7 +79,7 @@ namespace AwlrAziz.Repositories
                 throw;
             }
         }
-        
+
         public async Task InsertAsync(string deviceId, double tma)
         {
             var device = await GetExistingDeviceAsync(deviceId);
@@ -99,6 +100,35 @@ namespace AwlrAziz.Repositories
 
             _context.AwlrLastReadings.Add(data);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<dynamic>> GetReadingDevice(string id)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            var sql = @"
+                SELECT 
+                    st.""Name"",
+                    st.""Type"",
+                    r.""DeviceId"",
+                    st.""Latitude"",
+                    st.""Longitude"",
+                    set.""Siaga1"",
+                    set.""Siaga2"",
+                    set.""Siaga3"",
+                    set.""UnitDisplay"",
+                    set.""UnitSensor"",
+                    r.""ReadingAt"",
+                    r.""WaterLevel"",
+                    r.""ChangeValue"",
+                    r.""ChangeStatus"",
+                    r.""WarningStatus""
+                FROM ""AwlrLastReadings"" AS r 
+                LEFT JOIN ""Stations"" AS st ON r.""StationId"" = st.""Id""
+                LEFT JOIN ""AwlrSettings"" AS set ON st.""Id"" = set.""StationId""
+                WHERE r.""DeviceId"" = @DeviceId";
+
+            var result = await connection.QueryAsync(sql, new { DeviceId = id });
+            return result.ToList();
         }
     }
 }

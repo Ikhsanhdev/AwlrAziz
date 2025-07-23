@@ -1,0 +1,197 @@
+@{
+    ViewData["Title"] = "Station Detail";
+}
+
+@section Styles {
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+    @* <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" /> *@
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <style>
+        .card-header-detail {
+            border: 1px solid #DADADA;
+            box-shadow: none;
+        }
+
+        .card-header-detail .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #DADADA;
+        }
+
+        .card-custom {
+            -radius: 6px;
+        }
+
+        .card-custom .card-header {
+            @*background-color:#2899D5;*@background-color: #fff;
+            border-radius: 6px 6px 0 0;
+        }
+
+        @*.card-custom>.nav-pills>li>a,.nav-tabs>li>a{color:rgb(255,255,255,0.8);}*@.card-custom .nav-bordered li a {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .card-custom>.nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active,
+        .card-custom>.nav-tabs .nav-link:focus,
+        .nav-tabs .nav-link:hover {
+            color: #2899D5;
+        }
+
+        .box-legend {
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 2px;
+            margin-right: 0.4rem;
+        }
+    </style>
+}
+
+<div class="container-fluid container-fluid-detail">
+    <div class="row">
+        <div class="card card-header-detail">
+            <div class="card-header py-2">
+                <div class="d-flex align-items-start">
+                    <a href="~/img/amik.png" class="image-link-popup">
+                        <img src="~/img/amik.png" class="avatar-lg img-thumbnail me-2" alt="profile-image">
+                    </a>
+                    <div>
+                        <h5 style="margin-bottom: 0.3rem;margin-top: 0.3rem;font-size: 16px;color: rgba(0,0,0,.85);">AWLR AZIZ</h5>
+                        <p style="margin-bottom: 0.2rem;color: rgb(150, 150, 150);font-size: 14px;font-weight: 500;" class="text-uppercase font-12">POS DUGA AIR</p>
+                        <span class="badge badge-outline-blue text-blue rounded-1 shadow-sm mb-1" style="padding: 0.2rem 0.3rem;font-weight: normal;">Higertech</span>
+                        <span class="badge badge-outline-blue text-blue rounded-1 shadow-sm mb-1" style="padding: 0.2rem 0.3rem;font-weight: normal;">MAA1</span>
+                    </div>
+                    <span class="ms-auto text-success">
+                        <i class="mdi mdi-signal-cellular-3 font-14 me-1"></i> Online
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="card card-custom">
+            <div class="card-header p-0 ">
+                <ul class="nav nav-tabs nav-bordered nav-justified">
+                    <li class="nav-item">
+                        <a id="tab-telemetri" href="#tab-data-telemetri" data-id="data-telemetri"
+                        data-bs-toggle="tab" aria-expanded="false"
+                        class="d-flex align-items-center justify-content-center nav-link tab-data active">
+                            DATA TELEMETRI
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="tab-graphic" href="#tab-grafik" data-id="data-grafik" data-bs-toggle="tab"
+                        class="nav-link tab-data">
+                            GRAFIK
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="tab-content p-0">
+                    <div class="tab-pane p-3 active " id="tab-data-telemetri" data-id="data-telemetri">
+                        <div class="row mt-2 mb-3">
+                            <div class="col-md-6 col-xs-12">
+                                <div class="d-flex">
+                                    <label for="periode" class=" col-form-label me-2">Periode</label>
+                                    <div class="input-group">
+                                        <input type="text" id="periode" name="periode" class="form-control w-80" placeholder="">
+                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                    </div>
+                                    <label for="periode-end" class="col-form-label me-2" style="margin-left: 10px;">s/d</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                        <input type="text" id="periode-end" name="periode-end" class="form-control w-80" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="awlr-telemetry-info" class=" bg-white mb-2" style="border: none;border-bottom-left-radius: 0.4285rem;border-bottom-right-radius: 0.4285rem;">
+                            <div class="row justify-content-center" id="awlr-status-water">
+                                <div class="col-auto">
+                                    <span><i class="mdi mdi-arrow-up-circle text-danger font-weight-bold" style="font-size: 16px;"></i> : Tinggi Air Meningkat</span>
+                                </div>
+                                <div class="col-auto">
+                                    <span><i class="mdi mdi-arrow-down-circle text-success font-weight-bold" style="font-size: 16px;"></i> : Tinggi Air Menurun</span>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-center mb-1">
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="box-legend" style="background-color: rgba(204, 204, 204, .4);"></span> : Tanpa Status
+                                </div>
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="box-legend" style="background:rgba(26,188,156);"></span> : Normal
+                                </div>
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="box-legend" style="background:rgba(248,237,98);"></span> : Waspada
+                                </div>
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="box-legend" style="background:rgba(247,160,2);"></span> : Siaga
+                                </div>
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="box-legend" style="background:rgba(239, 83, 80);"></span> : Awas
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-hover table-centered m-0 w-100 dataTable no-footer table-nowrap" id="table-telemetri">
+                                <thead class="bg-light"></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane px- py-0" id="tab-grafik" data-id="data-grafik">
+                        @* <input type="hidden" id="unit-sensor" value="@Model.UnitSensor">
+                        <input type="hidden" id="unit-display" value="@Model.UnitDisplay"> *@
+                        <div class="py-3 px-3 pb-1 mb-1 d-flex justify-content-center mb-5 mt-3">
+                            <label for="periode-grafik" class=" col-form-label me-2">Periode</label>
+                            <div class="col-6 d-flex justify-content-around">
+                                <div class="input-group me-2">
+                                    <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                    <input type="text" id="periode-grafik" name="periode-grafik" class="form-control w-80" placeholder="">
+                                </div>
+                                <label for="periode-grafik-end" class=" col-form-label me-2">s/d</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                    <input type="text" id="periode-grafik-end" name="periode-grafik-end" class="form-control w-80" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="text-uppercase p-2 py-2 mb-0" style="background-color: #F5F5F5;">Grafik Tinggi Muka Air</h5>
+                        <div class="p-0 pb-1">
+                            <div class="row table-responsive " id="parent-grafik">
+                                <div id="container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @* <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.id.min.js"></script> *@
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+    <script src="~/lib/moment/min/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/id.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.43/moment-timezone.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.31/moment-timezone-with-data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <script src="~/js/pages/Detail.min.js"></script>
+}

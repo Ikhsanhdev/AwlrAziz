@@ -19,6 +19,7 @@ namespace AwlrAziz.Repositories
         Task<List<dynamic>> GetReadingDevice(string id);
         Task<VMAwlrLastReading> GetAwlrLastReading(string id);
         Task<AwlrSetting> GetAwlrSetting(string id);
+        DateTime LastReading(string deviceId);
     }
 
     public class DeviceRepository : IDeviceRepository
@@ -175,7 +176,7 @@ namespace AwlrAziz.Repositories
                 StationId = device.StationId,
                 WaterLevel = (double)tma,
                 ReadingAt = DateTime.Now,
-                ChangeValue = changeValue,
+                ChangeValue = (double)changeValue,
                 ChangeStatus = changeStatus,
                 WarningStatus = warningStatus
             };
@@ -213,6 +214,12 @@ namespace AwlrAziz.Repositories
 
             var result = await connection.QueryAsync(sql, new { DeviceId = id });
             return result.ToList();
+        }
+
+        public DateTime LastReading(string deviceId)
+        {
+            var last = _context.AwlrLastReadings.Where(x => x.DeviceId == deviceId).OrderByDescending(x => x.ReadingAt).FirstOrDefault();
+            return last?.ReadingAt ?? DateTime.MinValue;
         }
     }
 }

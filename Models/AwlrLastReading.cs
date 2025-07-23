@@ -11,7 +11,7 @@ public partial class AwlrLastReading
 
     public DateTime ReadingAt { get; set; }
     public double WaterLevel { get; set; }
-    public decimal? ChangeValue { get; set; }
+    public double? ChangeValue { get; set; }
 
     public string? ChangeStatus { get; set; }
 

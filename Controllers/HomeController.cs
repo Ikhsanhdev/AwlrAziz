@@ -51,6 +51,15 @@ public class HomeController : Controller
         return Json(result);
     }
 
+    public async Task<IActionResult> GetLatestReading()
+    {
+        var data =  await _unitOfWorkRepository.Devices.GetLatestReading();
+        if (data == null)
+            return NotFound();
+
+        return Ok(data);
+    }
+
     public IActionResult Privacy()
     {
         return View();

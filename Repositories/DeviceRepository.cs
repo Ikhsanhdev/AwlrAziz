@@ -21,6 +21,7 @@ namespace AwlrAziz.Repositories
         Task<AwlrSetting> GetAwlrSetting(string id);
         DateTime LastReading(string deviceId);
         Task<List<AwlrLastReading>> GetReadingsByPeriodeAsync(DateTime start, DateTime end);
+        Task<dynamic> GetLatestReading();
     }
 
     public class DeviceRepository : IDeviceRepository
@@ -232,6 +233,30 @@ namespace AwlrAziz.Repositories
                 .Where(r => r.ReadingAt >= startOfDay && r.ReadingAt <= endOfDay)
                 .OrderByDescending(r => r.ReadingAt)
                 .ToListAsync();
+        }
+
+        public async Task<dynamic> GetLatestReading()
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            var sql = @"
+                SELECT 
+                    st.""Name"" AS name,
+                    br.""Name"" AS brand_name,
+                    dv.""DeviceId"" AS device_id,
+                    ls.""WaterLevel"" AS water_level,
+                    ls.""ReadingAt"" AS reading_at,
+                    ls.""WarningStatus"" AS warning_status
+                FROM
+                    ""AwlrLastReadings"" AS ls
+                    LEFT JOIN ""Stations"" AS st ON ls.""StationId"" = st.""Id""
+                    LEFT JOIN ""Devices"" AS dv ON st.""Id"" = dv.""StationId""
+                    LEFT JOIN ""Brands"" AS br ON br.""Code"" = dv.""BrandCode""
+                ORDER BY 
+                    ls.""ReadingAt"" DESC 
+                LIMIT 1";
+
+            var result = await connection.QueryFirstOrDefaultAsync(sql);
+            return result;
         }
     }
 }

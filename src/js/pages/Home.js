@@ -108,4 +108,73 @@ $(document).ready(function() {
             enabled: false
         }
     });
+
+    loadAwlrPanel();
 });
+
+async function loadAwlrPanel() {
+    try {
+        const res = await fetch('/Home/GetLatestReading');
+        if (!res.ok) throw new Error("Gagal memuat data");
+
+        const data = await res.json();
+
+        const html = `<div class="col-md-4 mb-3">
+                <h5>Nama Pos:</h5>
+                <p class="mb-1 fw-semibold">${data.name || '-'}</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Device:</h5>
+                <p class="mb-1 fw-semibold">${data.brand_name || '-'} <span class="badge bg-warning text-dark">${data.device_id || '-'}</span></p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Tinggi Muka Air (TMA):</h5>
+                <p class="mb-1 text-primary fw-semibold">${parseFloat(data.water_level).toFixed(2)} cm</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <h5>Status:</h5>
+                <span class="badge ${getStatusBadgeClass(data.warning_status)} text-dark">${data.warning_status || '-'}</span>
+            </div>
+            <div class="col-md-6 mb-2">
+                <h5>Waktu Pengukuran:</h5>
+                <p class="mb-0 text-muted">${formatDate(data.reading_at)}</p>
+            </div>`;
+
+        document.getElementById("info-panel").innerHTML = html;
+    } catch (err) {
+        console.error("Error:", err);
+        document.getElementById("info-panel").innerHTML = `<p class="text-danger">Gagal memuat data.</p>`;
+    }
+}
+
+function getStatusBadgeClass(status) {
+    switch ((status || '').toLowerCase()) {
+        case 'normal': return 'bg-success text-dark';
+        case 'siaga 1': return 'bg-danger text-dark';
+        case 'siaga 2': return 'bg-orange';
+        case 'siaga 3': return 'bg-warning';
+        default: return 'bg-secondary';
+    }
+}
+
+// Fungsi bantu: format tanggal ke format lokal
+function formatDate(dateStr) {
+    if (!dateStr) return '-';
+    const date = new Date(dateStr);
+
+    const tanggal = date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'Asia/Jakarta'
+    });
+
+    const jam = date.toLocaleTimeString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Jakarta'
+    }).replace('.', ':'); // Ubah titik menjadi titik dua jika perlu
+
+    return `${tanggal} ${jam} WIB`;
+}

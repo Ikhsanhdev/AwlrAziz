@@ -35,6 +35,90 @@
       height: 100%;
       min-height: 400px;
     }
+
+    .progress-meter {
+      min-height: 6px;
+  }
+
+  .progress-meter > .meter {
+      position: relative;
+      float: left;
+      min-height: 6px;
+      border-width: 0px;
+      border-style: solid;
+      border-color: rgb(160, 160, 160);
+  }
+
+  .progress-meter > .meter:hover {
+      cursor: pointer;
+  }
+
+  .progress-meter > .meter-normal {
+      background-color: #4DC27E;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+  }
+
+  .progress-meter > .meter-waspada {
+      background-color: #FFDA4F;
+  }
+
+  .progress-meter > .meter-siaga {
+      background-color: #FFA600;
+  }
+
+  .progress-meter > .meter-awas {
+      background-color: #EF5350;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+  }
+
+  .progress-meter > .meter-left {
+      border-left-width: 1px;
+  }
+
+  .progress-meter > .meter > .meter-text {
+      position: absolute;
+      display: inline-block;
+      bottom: -18px;
+      width: 100%;
+      font-weight: 600;
+      font-size: 0.65em;
+      color: rgb(160, 160, 160);
+      text-align: left;
+  }
+
+  .gm-style-iw-chr {
+            position: absolute;
+            display: flex;
+            top: 0;
+            right: 0;
+        }
+
+        .gm-style-iw.gm-style-iw-c {
+            padding-top: 10px !important;
+        }
+
+        /* Override the styles for the Google Maps InfoWindow */
+        .gm-style-iw {
+            padding: 0;
+            /* Remove any additional padding */
+        }
+
+        /* Ensure the content area has no extra margin */
+        .gm-style-iw-c {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Position the close button and ensure it does not overlap with the content */
+        .gm-style-iw-ch {
+            display: flex;
+            justify-content: space-between;
+            /* Space between close button and content */
+            align-items: flex-start;
+            /* Align items to the top */
+        }
   </style>
 }
 

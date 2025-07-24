@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AwlrAziz.Models;
+using AwlrAziz.Models.Customs;
 using AwlrAziz.Interfaces;
 
 namespace AwlrAziz.Controllers;
@@ -64,6 +65,21 @@ public class HomeController : Controller
     {
         var data = await _unitOfWorkRepository.Devices.GetLastGrafik();
         return Ok(data);
+    }
+
+    public async Task<JsonResult> GetLastReadingMap()
+    {
+        var result = new HttpResult();
+        var getResult = await _unitOfWorkRepository.Devices.GetLastReadingMap();
+
+        result.metaData = new MetaData
+        {
+            code = 200,
+            message = "OK"
+        };
+
+        result.response = getResult;
+        return Json(result);
     }
 
     public IActionResult Privacy()

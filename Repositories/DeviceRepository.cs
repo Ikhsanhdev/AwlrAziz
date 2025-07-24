@@ -23,6 +23,7 @@ namespace AwlrAziz.Repositories
         Task<List<AwlrLastReading>> GetReadingsByPeriodeAsync(DateTime start, DateTime end);
         Task<dynamic> GetLatestReading();
         Task<List<dynamic>> GetLastGrafik();
+        Task<IReadOnlyList<dynamic>> GetLastReadingMap();
     }
 
     public class DeviceRepository : IDeviceRepository
@@ -263,7 +264,7 @@ namespace AwlrAziz.Repositories
         public async Task<List<dynamic>> GetLastGrafik()
         {
             using var connection = new NpgsqlConnection(_connectionString);
-            
+
             var sql = @"
                 SELECT 
                     ls.""ReadingAt"" AS reading_at,
@@ -280,6 +281,47 @@ namespace AwlrAziz.Repositories
 
             var result = await connection.QueryAsync(sql);
             return result.ToList();
+        }
+        
+        public async Task<IReadOnlyList<dynamic>> GetLastReadingMap()
+        {
+            try
+            {
+                using var _db = new NpgsqlConnection(_connectionString);
+                var query = $@"
+                    SELECT DISTINCT
+                        st.""Name"" AS name,
+                        st.""Latitude"" AS latitude,
+                        st.""Longitude"" AS longitude,
+                        dv.""DeviceId"" AS device_id,
+                        br.""Name"" AS brand_name,
+                        set.""Siaga1"" AS siaga1,
+                        set.""Siaga2"" AS siaga2,
+                        set.""Siaga3"" AS siaga3,
+                        (SELECT ""ReadingAt"" FROM ""AwlrLastReadings"" WHERE st.""Id"" = ""StationId"" ORDER BY ""ReadingAt"" DESC LIMIT 1) AS reading_at,
+                        (SELECT ""WaterLevel"" FROM ""AwlrLastReadings"" WHERE st.""Id"" = ""StationId"" ORDER BY ""ReadingAt"" DESC LIMIT 1) AS water_level,
+                        (SELECT ""WarningStatus"" FROM ""AwlrLastReadings"" WHERE st.""Id"" = ""StationId"" ORDER BY ""ReadingAt"" DESC LIMIT 1) AS status
+                    FROM 
+                        ""Stations"" AS st 
+                        LEFT JOIN ""AwlrSettings"" AS set ON st.""Id"" = set.""StationId""
+                        LEFT JOIN ""Devices"" AS dv ON st.""Id"" = dv.""StationId""
+                        LEFT JOIN ""Brands"" AS br ON br.""Code"" = dv.""BrandCode""
+                    WHERE 
+                        st.""Type"" = 'AWLR'";
+
+                var result = await _db.QueryAsync<dynamic>(query);
+                return result.ToList();
+            }
+            catch (NpgsqlException ex)
+            {
+                Log.Error(ex, "PostgreSQL Exception: {@ExceptionDetails}", new { ex.Message, ex.StackTrace });
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "General Exception: {@ExceptionDetails}", new { ex.Message, ex.StackTrace });
+                throw;
+            }
         }
     }
 }

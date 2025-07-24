@@ -60,6 +60,12 @@ public class HomeController : Controller
         return Ok(data);
     }
 
+    public async Task<IActionResult> GetLastGrafik()
+    {
+        var data = await _unitOfWorkRepository.Devices.GetLastGrafik();
+        return Ok(data);
+    }
+
     public IActionResult Privacy()
     {
         return View();

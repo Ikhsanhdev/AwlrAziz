@@ -67,49 +67,8 @@ function initMap() {
 }
 
 $(document).ready(function() {
-    Highcharts.chart('chartTMA', {
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: ''
-        },
-        xAxis: {
-            categories: [
-                '01:00', '02:00', '03:00', '04:00', '05:00', '06:00',
-                '07:00', '08:00', '09:00', '10:00'
-            ],
-            title: {
-                text: 'Jam'
-            }
-        },
-        yAxis: {
-            title: {
-                text: 'TMA (m)'
-            },
-            plotLines: [{
-                value: 135.0,
-                color: 'orange',
-                dashStyle: 'ShortDash',
-                width: 2,
-                label: {
-                text: 'Batas Siaga',
-                align: 'right',
-                style: { color: 'orange', fontWeight: 'bold' }
-                }
-            }]
-        },
-            series: [{
-            name: 'TMA',
-            data: [134.0, 134.1, 134.2, 134.4, 134.3, 134.6, 134.8, 134.9, 135.1, 135.3],
-            color: '#007bff'
-        }],
-            credits: {
-            enabled: false
-        }
-    });
-
     loadAwlrPanel();
+    loadChartTMA();
 });
 
 async function loadAwlrPanel() {
@@ -144,6 +103,72 @@ async function loadAwlrPanel() {
     } catch (err) {
         console.error("Error:", err);
         document.getElementById("info-panel").innerHTML = `<p class="text-danger">Gagal memuat data.</p>`;
+    }
+}
+
+async function loadChartTMA() {
+    try {
+        const response = await fetch('/Home/GetLastGrafik');
+        const result = await response.json();
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        const data = result
+            .filter(item => {
+                const readingDate = new Date(item.reading_at);
+                return readingDate >= today && readingDate <= now;
+            })
+            .sort((a, b) => new Date(a.reading_at) - new Date(b.reading_at));
+
+        if (data.length === 0) {
+            console.warn("Tidak ada data hari ini.");
+            return;
+        }
+
+        const categories = data.map(item => {
+            const date = new Date(item.reading_at);
+            return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        });
+
+        const waterLevels = data.map(item => parseFloat(item.water_level));
+        const siagaValue = data[0].siaga1 != null ? parseFloat(data[0].siaga1) : 135.0;
+
+        console.log("Nilai siaga:", siagaValue);
+
+        Highcharts.chart('chartTMA', {
+            chart: { type: 'line' },
+            title: { text: '' },
+            xAxis: {
+                categories: categories,
+                title: { text: 'Jam' }
+            },
+            yAxis: {
+                title: { text: 'TMA (m)' },
+                min: Math.min(...waterLevels, siagaValue) - 0.2,
+                max: Math.max(...waterLevels, siagaValue) + 0.2,
+                plotLines: [{
+                    value: siagaValue,
+                    color: 'orange',
+                    dashStyle: 'ShortDash',
+                    width: 2,
+                    label: {
+                        text: 'Batas Siaga',
+                        align: 'right',
+                        style: { color: 'orange', fontWeight: 'bold' }
+                    }
+                }]
+            },
+            series: [{
+                name: 'TMA',
+                data: waterLevels,
+                color: '#007bff'
+            }],
+            credits: { enabled: false }
+        });
+
+    } catch (error) {
+        console.error('Gagal memuat grafik TMA:', error);
     }
 }
 

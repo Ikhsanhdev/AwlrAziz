@@ -20,6 +20,7 @@ namespace AwlrAziz.Repositories
         Task<VMAwlrLastReading> GetAwlrLastReading(string id);
         Task<AwlrSetting> GetAwlrSetting(string id);
         DateTime LastReading(string deviceId);
+        Task<List<AwlrLastReading>> GetReadingsByPeriodeAsync(DateTime start, DateTime end);
     }
 
     public class DeviceRepository : IDeviceRepository
@@ -220,6 +221,17 @@ namespace AwlrAziz.Repositories
         {
             var last = _context.AwlrLastReadings.Where(x => x.DeviceId == deviceId).OrderByDescending(x => x.ReadingAt).FirstOrDefault();
             return last?.ReadingAt ?? DateTime.MinValue;
+        }
+
+        public async Task<List<AwlrLastReading>> GetReadingsByPeriodeAsync(DateTime start, DateTime end)
+        {
+            var startOfDay = start.Date; // 00:00:00
+            var endOfDay = end.Date.AddDays(1).AddTicks(-1); // 23:59:59.9999999
+
+            return await _context.AwlrLastReadings
+                .Where(r => r.ReadingAt >= startOfDay && r.ReadingAt <= endOfDay)
+                .OrderByDescending(r => r.ReadingAt)
+                .ToListAsync();
         }
     }
 }

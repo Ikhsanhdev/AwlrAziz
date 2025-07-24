@@ -33,6 +33,24 @@ public class HomeController : Controller
         return Json(new { lastReading = result });
     }
 
+    public async Task<IActionResult> GetDataTableAwlr(string periode, string periodEnd)
+    {
+        if (!DateTime.TryParse(periode, out var startDate) || 
+            !DateTime.TryParse(periodEnd, out var endDate))
+        {
+            return BadRequest("Format tanggal salah.");
+        }
+
+        var data = await _unitOfWorkRepository.Devices.GetReadingsByPeriodeAsync(startDate, endDate);
+        
+        var result = data.Select(r => new {
+            readingAt = r.ReadingAt,
+            waterLevel = r.WaterLevel
+        });
+
+        return Json(result);
+    }
+
     public IActionResult Privacy()
     {
         return View();

@@ -247,12 +247,16 @@ namespace AwlrAziz.Repositories
                     dv.""DeviceId"" AS device_id,
                     ls.""WaterLevel"" AS water_level,
                     ls.""ReadingAt"" AS reading_at,
-                    ls.""WarningStatus"" AS warning_status
+                    ls.""WarningStatus"" AS warning_status,
+                    set.""Siaga3"" AS siaga3,
+                    set.""Siaga2"" AS siaga2,
+                    set.""Siaga1"" AS siaga1
                 FROM
                     ""AwlrLastReadings"" AS ls
                     LEFT JOIN ""Stations"" AS st ON ls.""StationId"" = st.""Id""
                     LEFT JOIN ""Devices"" AS dv ON st.""Id"" = dv.""StationId""
                     LEFT JOIN ""Brands"" AS br ON br.""Code"" = dv.""BrandCode""
+                    LEFT JOIN ""AwlrSettings"" AS set ON st.""Id"" = set.""StationId""
                 ORDER BY 
                     ls.""ReadingAt"" DESC 
                 LIMIT 1";

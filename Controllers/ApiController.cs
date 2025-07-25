@@ -64,6 +64,6 @@ namespace AwlrAziz.Controllers
                 Log.Error(ex, "Gagal mengambil data dengan id={Id}", id);
                 return StatusCode(500, ex.Message);
             }
-         }
+        }
     }
 }

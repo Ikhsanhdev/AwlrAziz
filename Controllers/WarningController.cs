@@ -65,7 +65,7 @@ public class WarningController : Controller
                 msg += $"Nama Pos : *{data?.name?.ToString() ?? "Tidak tersedia"}* \n";
                 msg += $"Device : *{data?.brand_name?.ToString() ?? "Tidak tersedia"} - {data?.device_id?.ToString() ?? "Tidak tersedia"}* \n";
                 msg += $"Waktu : *{formattedDate} WIB* \n";
-                msg += $"Tinggi Muka Air : *{data?.water_level?.ToString() ?? "Tidak tersedia"} cm*";
+                msg += $"Tinggi Muka Air : *{data?.water_level?.ToString() ?? "Tidak tersedia"} {data?.display?.ToString() ?? ""}*";
                 msg = msg.Replace("\n", "\\n");
 
                 string jsonBody = $@"{{ 

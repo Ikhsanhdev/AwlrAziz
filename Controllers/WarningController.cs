@@ -85,8 +85,11 @@ public class WarningController : Controller
                 }
                 else
                 {
+                    string errorResponse = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
-                    return StatusCode((int)response.StatusCode);
+                    Console.WriteLine("Isi error dari API:");
+                    Console.WriteLine(errorResponse);
+                    return StatusCode((int)response.StatusCode, errorResponse);
                 }
             }
         }

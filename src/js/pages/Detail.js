@@ -113,11 +113,11 @@ function generateDataTable(periode, periodEnd, callback) {
             }
         },
         {
-            title: "Tinggi Muka Air (cm)",
+            title: "Tinggi Muka Air (m)",
             data: "waterLevel",
             class: "text-center",
             render: function (data) {
-                return `${data.toFixed(2)} cm`;
+                return `${data.toFixed(2)} m`;
             }
         }
     ];

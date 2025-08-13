@@ -250,7 +250,8 @@ namespace AwlrAziz.Repositories
                     ls.""WarningStatus"" AS warning_status,
                     set.""Siaga3"" AS siaga3,
                     set.""Siaga2"" AS siaga2,
-                    set.""Siaga1"" AS siaga1
+                    set.""Siaga1"" AS siaga1,
+                    set.""UnitDisplay"" AS display
                 FROM
                     ""AwlrLastReadings"" AS ls
                     LEFT JOIN ""Stations"" AS st ON ls.""StationId"" = st.""Id""

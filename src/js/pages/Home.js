@@ -90,7 +90,7 @@ async function loadAwlrPanel() {
             </div>
             <div class="col-md-4 mb-3">
                 <h5>Tinggi Muka Air (TMA):</h5>
-                <p class="mb-1 text-primary fw-semibold">${parseFloat(data.water_level).toFixed(2)} cm</p>
+                <p class="mb-1 text-primary fw-semibold">${parseFloat(data.water_level).toFixed(2)} ${data.display}</p>
             </div>
             <div class="col-md-6 mb-3">
                 <h5>Status:</h5>
@@ -101,7 +101,22 @@ async function loadAwlrPanel() {
                 <p class="mb-0 text-muted">${formatDate(data.reading_at)}</p>
             </div>`;
 
+        const siaga = `<div class="position-relative mb-2" style="height: 20px; background: linear-gradient(to right, #28a745 0%, #ffc107 33%, #fd7e14 66%, #dc3545 100%); border-radius: 10px;"></div>
+            <div class="d-flex justify-content-between small fw-semibold mt-2">
+                <div class="text-success">0</div>
+                <div class="text-warning">${data.siaga3} ${data.display}</div>
+                <div class="text-orange" style="color: #fd7e14;">${data.siaga2} ${data.display}</div>
+                <div class="text-danger">${data.siaga1} ${data.display}</div>
+            </div>
+            <ul class="list-inline text-center mt-3 mb-0 small text-muted">
+                <li class="list-inline-item">Normal: <span class="text-success fw-bold">Hijau</span></li>
+                <li class="list-inline-item">Waspada: <span class="text-warning fw-bold">Kuning</span></li>
+                <li class="list-inline-item">Siaga: <span style="color: #fd7e14;" class="fw-bold">Oranye</span></li>
+                <li class="list-inline-item">Awas: <span class="text-danger fw-bold">Merah</span></li>
+            </ul>`;
+
         document.getElementById("info-panel").innerHTML = html;
+        document.getElementById("siaga").innerHTML = siaga;
     } catch (err) {
         console.error("Error:", err);
         document.getElementById("info-panel").innerHTML = `<p class="text-danger">Gagal memuat data.</p>`;
